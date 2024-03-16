@@ -19,13 +19,13 @@ pip install tensorrt==8.5.1.7
 CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)")) && \
 TENSORRT_PATH=$(dirname $(python -c "import tensorrt;print(tensorrt.__file__)")) && \
 export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH && \
+export LD_LIBRARY_PATH=$CONDA_PREFIX/tensorrt_libs/:$LD_LIBRARY_PATH && \
 export LD_LIBRARY_PATH=$CUDNN_PATH/lib:$CONDA_PREFIX/lib/:$LD_LIBRARY_PATH && \
 export LD_LIBRARY_PATH=$TENSORRT_PATH/lib:$LD_LIBRARY_PATH && \
 export PATH=/home/aicore/ursu/protoc/bin:$PATH
 
 
 # export LD_LIBRARY_PATH=/usr/local/cuda-18.2/lib64:$LD_LIBRARY_PATH
-# export LD_LIBRARY_PATH=$CONDA_PREFIX/tensorrt_libs/:$LD_LIBRARY_PATH && \
 ```
 
 <!-- ??? -->
