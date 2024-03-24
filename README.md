@@ -1,17 +1,12 @@
 # SignLanguageRecognition
 
-## TODO 
+## TODO
 
-- (Done) Create and train a model on a dataset of 3 Words
-- Convert model using TensorflowLite
-- Create an Adroid App that uses the converted model and MediaPipe for Android
-- Add functionality to create sentences from the predicted words
-- Add functionality to reset the sentence, stop the camera, things like that
-- Create a larger data-set and implement it in the app
-
-### TODO Python Code
-- Store trained models into 'models'
-- Create a model with much more specific accuracy (show only the hand gestures and not the face)
-- Make the code into objects
-- Make out of the opening camera code part a function that can be used for getting data, testing mediapipe, testing model
-- make a activate.d for the conda env on gpu machine
+- [] have 5 signs in total
+- [] build an app ?
+- [] normalize coordonates(data-set) [link1](https://www.youtube.com/watch?v=a99p_fAr6e4)
+- [] hand gesture controlled presentation [link2](https://www.youtube.com/watch?v=CKmAZss-T5Y)
+- [] create a csv files for sign labels that I train and use
+- [] restructure the project (use snake_case)
+- [] make the model be built on static images rather that video sequences(create a mode where you have the camera+mediapipe opened and you can press a button to take a picture)
+(maybe have like 2 examples of use for my license, one to create sentences, another to control a presentation)
