@@ -23,7 +23,9 @@
 - [] create more data(split_size -> 0.8/0.2 or 0.75/0.25, the more data the bigger traing size)
 - [] try different batch sizes
 - [] move csv files to a separate 'data' folder
-- [] make a mode in which a point appears in the frame and I can move it with gesture (up, down, left, right(maybe at 45 degrees too???))
+- [+] make a mode in which a point appears in the frame and I can move it with gesture (up, down, left, right)
 - [] THINK: maybe I need to overfit my model, because Sign language detection must be precise not ambiguous
+- [] pass variables as function arguments, keep class params that are only specific to the respective class
+- [] more training data for abc
 
 (maybe have like 2 examples of use for my license, one to create sentences, another to control a presentation, or a mini game like google dinosaur)
