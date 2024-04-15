@@ -29,7 +29,7 @@ status = FrameStatus()
 status.sub_lists_of_signs = hands.reshape_sign_labels()
 
 # create a Model object
-model = Model('.\ImprovedCode\models\model18_abc_2.h5')
+model = Model('.\ImprovedCode\models\model19_abc_3.h5')
 
 if __name__ == "__main__":
 
