@@ -20,8 +20,8 @@ hands = HandDetector(
     detection_confidence=0.5,
     tracking_confidence=0.5,
     num_of_hands=1,
-    sign_labels_file_path='.\ImprovedCode\data\sign_labels_abc.csv',
-    data_set_file_path='.\ImprovedCode\data\data_set_abc.csv'
+    sign_labels_file_path='.\ImprovedCode\data\sign_labels_abc_2.csv',
+    data_set_file_path='.\ImprovedCode\data\data_set_abc_2.csv'
     )
 
 # create a FrameStatus object
@@ -56,10 +56,10 @@ if __name__ == "__main__":
 
         if mediapipe_results.multi_hand_landmarks is not None:
 
-            if mediapipe_results.multi_handedness[0].classification[0].label == 'Right':
-                print('Right hand detected')
-            elif mediapipe_results.multi_handedness[0].classification[0].label == 'Left':
-                print('Left hand detected')
+            # if mediapipe_results.multi_handedness[0].classification[0].label == 'Right':
+            #     print('Right hand detected')
+            # elif mediapipe_results.multi_handedness[0].classification[0].label == 'Left':
+            #     print('Left hand detected')
 
             # make a dict of the basic coordinates of the landmarks
             # values between 0 and 1, starting from the top left corner
