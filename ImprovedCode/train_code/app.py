@@ -5,7 +5,7 @@ from sign_language_model import Model
 from keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 
 
-ATTEMPT = '19_abc_3'
+ATTEMPT = '19_abc_4'
 
 model = Model(
     sign_labels_file_path = './data/sign_labels_abc_2.csv',

@@ -26,6 +26,7 @@ class Model:
             Dense(80, activation='relu'),
             Dropout(0.2),
             Dense(40, activation='relu'),
+            Dense(20, activation='relu'),
             Dense(len(self.sign_labels), activation='softmax') # experiment with different activation functions
         ])
     
