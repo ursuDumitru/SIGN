@@ -1,5 +1,2 @@
-models/
-CodeForMachineWithGPU/Logs/
-CodeForMachineWithCamera/data/
-ImprovedCode/models/
-ImprovedCode/logs/
+./ImprovedCode/models/
+./ImprovedCode/logs/

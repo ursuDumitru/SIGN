@@ -30,6 +30,6 @@
 - [] more layers in the model
 - [+] make it only one hand
 - [+] insert letters has a delay
-- [] right hand for word/letters, left hands for picking actions
+- [+] right hand for word/letters, left hands for picking actions # work fine without defining handedness
 
 (maybe have like 2 examples of use for my license, one to create sentences, another to control a presentation, or a mini game like google dinosaur)
