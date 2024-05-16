@@ -28,7 +28,7 @@ class Model:
             with open(sign_labels_file_path, 'r') as file:
                 pass
         except FileNotFoundError:
-            print(f'File : [{sign_labels_file_path}] not found!') # TODO: accentuate the file path in the other file too
+            print(f'File : [{sign_labels_file_path}] not found!')
             exit(1) # FIXME: maybe handle this better ?
 
         sign_labels = []
@@ -43,7 +43,7 @@ class Model:
         # TODO: see how you can change these
         X_data = np.loadtxt(self.data_set_path, delimiter=',', dtype='float32', usecols=list(range(1, (21 * 2) + 1)))
         y_data = np.loadtxt(self.data_set_path, delimiter=',', dtype='int32', usecols=(0))
-        
+
         return train_test_split(X_data, y_data, test_size=0.2, random_state=55) # TODO: try different number
 
 

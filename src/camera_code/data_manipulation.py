@@ -11,6 +11,8 @@ class HandDetector:
         self.data_set_file_path = data_set_file_path
         self.sign_labels_file_path = sign_labels_file_path
         self.sign_labels = self.get_sign_labels() # list of sign labels
+        self.purple = (153,0,153)
+        self.white = (255,255,255)
 
         # mediapipe model
         self.model = self.mp_hands.Hands(
@@ -36,9 +38,8 @@ class HandDetector:
             for hand_landmarks in mediapipe_results.multi_hand_landmarks:
                 self.mp_drawing.draw_landmarks(
                     image, hand_landmarks, self.mp_hands.HAND_CONNECTIONS,
-                    self.mp_drawing.DrawingSpec(color=(153,0,153), thickness=2, circle_radius=1),
-                    self.mp_drawing.DrawingSpec(color=(255,255,255), thickness=2, circle_radius=1)
-                )
+                    self.mp_drawing.DrawingSpec(color=self.purple, thickness=2, circle_radius=1),
+                    self.mp_drawing.DrawingSpec(color=self.white, thickness=2, circle_radius=1))
 
         return image
 
@@ -50,8 +51,7 @@ class HandDetector:
                 for landmark in hand_landmarks.landmark:
                     landmarks_dict.append({
                         'x': landmark.x,
-                        'y': landmark.y
-                    })
+                        'y': landmark.y})
 
         return landmarks_dict # len =  21 always(for one hand)
 
@@ -64,9 +64,8 @@ class HandDetector:
         for landmark in landmarks_dict:
             normalized_landmarks.append({
                 'x': landmark['x'] - wrist['x'],
-                'y': landmark['y'] - wrist['y']
+                'y': landmark['y'] - wrist['y']})
                 # no 'z' as I do not care about the depth
-            })
 
         return normalized_landmarks
 

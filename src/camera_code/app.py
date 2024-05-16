@@ -18,7 +18,7 @@ def toggle_insert_letter(insert_letter):
 base_dir = os.path.dirname(os.path.realpath(__file__)) + '\\..\\..\\'
 sign_labels_file_path = base_dir + 'data\sign_labels\sign_labels_abc_3.csv'
 data_set_file_path = base_dir + 'data\data_set\data_set_abc_3.csv'
-model_weights_file_path = base_dir + 'models\model19_abc_4.h5'
+model_weights_file_path = base_dir + 'models\model_abc_3.h5'
 
 # create a HandDetector object
 hands = HandDetector(
@@ -47,7 +47,6 @@ if __name__ == "__main__":
 
     while True:
         _, frame = cap.read()
-
         key_input = cv.waitKey(10)
 
         # quit camera
@@ -58,7 +57,6 @@ if __name__ == "__main__":
         status.get_sign_from_key_input(key_input)
         frame, mediapipe_results = hands.mediapipe_detect(frame)
         frame = status.set_status_text(frame, key_input, hands)
-        # frame = status.display_word(frame)
 
         if mediapipe_results.multi_hand_landmarks is not None:
 
@@ -78,9 +76,8 @@ if __name__ == "__main__":
             # make a prediction
             prediction = model.make_prediction(normalized_landmarks_list, status)
 
-            # highlight the predicted sign
-            frame = status.draw_rectangle_around_hand(frame, landmarks_dict, prediction, hands, insert_letter, process)
-            frame = status.display_word_and_sentence(frame, hands, landmarks_dict)
+            # take the predicted sign and manage it accordingly
+            frame = status.manage_prediction(frame, landmarks_dict, prediction, hands, insert_letter, process)
 
         cv.imshow('App', frame) # SIRS: Sistem Inteligent de Recunoastere a Semnelor ???
 
