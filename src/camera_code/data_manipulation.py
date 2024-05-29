@@ -1,18 +1,21 @@
 import cv2 as cv
-import numpy as np
 import mediapipe as mp
 
 
 class HandDetector:
-    def __init__(self, use_static_image, detection_confidence, tracking_confidence, num_of_hands, sign_labels_file_path, data_set_file_path):
+    def __init__(self, use_static_image, detection_confidence, tracking_confidence, num_of_hands, sign_labels_file_path,
+                 data_set_file_path):
         # useful objects
         self.mp_hands = mp.solutions.hands
         self.mp_drawing = mp.solutions.drawing_utils
         self.data_set_file_path = data_set_file_path
         self.sign_labels_file_path = sign_labels_file_path
-        self.sign_labels = self.get_sign_labels() # list of sign labels
-        self.purple = (153,0,153)
-        self.white = (255,255,255)
+        self.sign_labels = self.get_sign_labels()  # list of sign labels
+        # self.sign_labels_counted = self.get
+
+        # colors
+        self.purple = (153, 0, 153)
+        self.white = (255, 255, 255)
 
         # mediapipe model
         self.model = self.mp_hands.Hands(
@@ -22,7 +25,6 @@ class HandDetector:
             max_num_hands=num_of_hands
         )
 
-
     def mediapipe_detect(self, image):
         image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         image.flags.writeable = False
@@ -31,7 +33,6 @@ class HandDetector:
         image = cv.cvtColor(image, cv.COLOR_RGB2BGR)
 
         return image, mediapipe_results
-
 
     def draw_landmarks(self, image, mediapipe_results):
         if mediapipe_results.multi_hand_landmarks:
@@ -43,32 +44,29 @@ class HandDetector:
 
         return image
 
-
     def get_landmarks_as_dict(self, mediapipe_results):
         landmarks_dict = []
-        if mediapipe_results.multi_hand_landmarks: # len = 1 or 2
+        if mediapipe_results.multi_hand_landmarks:  # len = 1 or 2
             for hand_landmarks in mediapipe_results.multi_hand_landmarks:
                 for landmark in hand_landmarks.landmark:
                     landmarks_dict.append({
                         'x': landmark.x,
                         'y': landmark.y})
 
-        return landmarks_dict # len =  21 always(for one hand)
-
+        return landmarks_dict  # len =  21 always(for one hand)
 
     def convert_landmark_to_list(self, landmarks_dict):
         # wrist will be 0.0, 0.0, 0.0
         wrist = landmarks_dict[0]
-        normalized_landmarks = [] # values between -1 and 1, wrist being 0, 0, 0, len = 21(for one hand)
+        normalized_landmarks = []  # values between -1 and 1, wrist being 0, 0, 0, len = 21(for one hand)
 
         for landmark in landmarks_dict:
             normalized_landmarks.append({
                 'x': landmark['x'] - wrist['x'],
                 'y': landmark['y'] - wrist['y']})
-                # no 'z' as I do not care about the depth
+            # no 'z' as I do not care about the depth
 
         return normalized_landmarks
-
 
     def normalize_landmarks(self, landmarks_dict):
         normalized_landmarks = self.convert_landmark_to_list(landmarks_dict)
@@ -79,7 +77,6 @@ class HandDetector:
                 normalized_landmarks_list.append(landmark[key])
 
         return normalized_landmarks_list
-
 
     def save_landmarks_to_csv_file(self, normalized_landmarks_list, key_input, status):
         if status.MODE == 's':
@@ -96,13 +93,13 @@ class HandDetector:
                             exit(0)
 
                         # add comma after each landmark
-                        string_to_save = f"{status.real_list_index}," + ','.join(str(landmark) for landmark in normalized_landmarks_list)
+                        string_to_save = f"{status.real_list_index}," + ','.join(
+                            str(landmark) for landmark in normalized_landmarks_list)
 
                         # write the last landmark
-                        with open(self.data_set_file_path, 'a') as file: # a = append
+                        with open(self.data_set_file_path, 'a') as file:  # a = append
                             file.write(str(string_to_save) + '\n')
                         file.close()
-
 
     def get_sign_labels(self):
         # check if file exists
@@ -111,14 +108,13 @@ class HandDetector:
                 pass
         except FileNotFoundError:
             print(f'File : {self.sign_labels_file_path} not found!')
-            exit(1) # FIXME: maybe handle this better ?
+            exit(1)  # FIXME: maybe handle this better ?
 
         with open(self.sign_labels_file_path, 'r') as file:
             sign_labels = file.read().splitlines()
         file.close()
 
         return sign_labels
-
 
     def count_number_of_saved_landmarks(self):
         # check if file exists
@@ -134,9 +130,8 @@ class HandDetector:
         with open(self.data_set_file_path, 'r') as file:
             for line in file.readlines():
                 list_of_counted_signs[int(line.split(',')[0])] += 1
-        
-        return list_of_counted_signs
 
+        return list_of_counted_signs
 
     def find_min_and_max_for_x_and_y(self, landmarks_dict):
         min_x = min_y = 1
@@ -150,8 +145,7 @@ class HandDetector:
 
         return min_x, min_y, max_x, max_y
 
-
     # make a list of sub-lists, each 10 elements
     # for easier sign selection while creating the data-set
     def reshape_sign_labels(self):
-        return [self.sign_labels[i:i+10] for i in range(0, len(self.sign_labels), 10)]
+        return [self.sign_labels[i:i + 10] for i in range(0, len(self.sign_labels), 10)]

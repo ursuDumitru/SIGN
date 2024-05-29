@@ -3,7 +3,7 @@ import os
 
 from keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 
-from sign_language_model import Model
+from train_code.sign_language_model import Model
 
 
 ATTEMPT = '_abc_3'
@@ -15,7 +15,7 @@ model_save_path = base_dir + f'models/model{ATTEMPT}.h5'
 
 model = Model(
     sign_labels_file_path = sign_labels_file_path,
-    data_set_path = data_set_file_path, # may need to change the path
+    data_set_path = data_set_file_path,  # may need to change the path
     model_save_path = model_save_path,
     random_state=0
     )

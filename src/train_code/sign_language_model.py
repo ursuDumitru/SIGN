@@ -14,7 +14,7 @@ class Model:
 
         self.model = Sequential([
             Input((21 * 2, )), # TODO: cannot be fused with the following layer
-            Dense(80, activation='relu'),
+            Dense(80, activation='relu'), # TODO: change neurons to multiples of 2
             Dropout(0.2),
             Dense(40, activation='relu'),
             Dense(20, activation='relu'),

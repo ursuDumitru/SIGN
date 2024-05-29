@@ -11,13 +11,6 @@
       (create a mode where you have the camera+mediapipe opened and you can press a button to take a picture)
 - [?] create tests for the project
 - [+] think if you will use x,y,z or just x,y (also, for normalization which will be the max value ?)
-- [] learn about *layers*
-- [+] learn about *input*, *how informations goes through the layers*, *output*
-- [] learn about *optimizers*, *loss* and *metrics*
-- [] learn about *Sequential*
-- [] learn about *random_state*
-- [] learn about *Dropout*
-- [] learn about *confusion matrix*
 - [] *plot* the data
 - [+] *plot* validation and training loss
 - [+] create more data(split_size -> 0.8/0.2 or 0.75/0.25, the more data the bigger traing size)
@@ -32,11 +25,32 @@
 - [+] insert letters has a delay
 - [+] right hand for word/letters, left hands for picking actions # work fine without defining handedness
 - [] 500 images per sign ???
+- [] translate the sentence in a language of choice
+- [] limit the word length
+- [] limit the sentence length
+- [] add a voice option to the translated text
+- [] write comments above each function
+- [] MAKE A MODEL FOR DYNAMIC SIGNS !!!!!!!!!!!!!!!!!
 
 ## TODO Training
 
 - [] new accurate data-set
 - [] create tests for the model
-- [] test every if branch so that it works as expected
+- [] test every code branch so that it works as expected
 
 (maybe have like 2 examples of use for my license, one to create sentences, another to control a presentation, or a mini game like google dinosaur)
+
+## TODO Learning
+
+- [] centroids
+- [] learn about *layers*
+- [+] learn about *input*, *how information goes through the layers*, *output*
+- [] learn about *optimizers*, *loss* and *metrics*
+- [] learn about *Sequential*
+- [] learn about *random_state*
+- [] learn about *Dropout*
+- [] learn about *confusion matrix*
+
+## Good to know
+
+- Alt + Shift + Up/Down = move lines
