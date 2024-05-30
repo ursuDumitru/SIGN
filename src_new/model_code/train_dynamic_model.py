@@ -46,7 +46,7 @@ model.model.compile(optimizer='adam',
 
 results = model.model.fit(x_train,
                           y_train,
-                          epochs=1000,
+                          epochs=500,
                         #   batch_size=16,
                           validation_data=(x_test, y_test),
                           # callbacks=[tensor_board, checkpoint, early_stopping]
@@ -62,5 +62,5 @@ plt.title('Model loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Val'], loc='upper right')
-plt.savefig(base_dir + f'images/models/model{ATTEMPT}.png')
+plt.savefig(base_dir + f'images/models/dynamic/model{ATTEMPT}.png')
 # plt.show()

@@ -67,18 +67,12 @@ class ModelDynamic(Model):
         self.get_sign_labels()
 
         self.model = Sequential([
-            # Input((30, 21, 2)),
-            # GRU(activation='relu', input_shape=(30, 42), units=256),
-            # GRU(activation='relu', units=128),
-            # GRU(activation='relu', units=64),
-            # Embedding(input_dim=30*21*2, output_dim=64),
-            GRU(256, input_shape=(30, 21 * 2), return_sequences=True),
+            GRU(256, return_sequences=True, input_shape=(30, 21 * 2)),
             GRU(128, return_sequences=True),
-            GRU(64, return_sequences=True),
-            # SimpleRNN(32),
-            Dense(128, activation='relu'),
-            Dropout(0.2),
+            GRU(64, return_sequences=False),
             Dense(64, activation='relu'),
+            Dropout(0.2),
+            Dense(32, activation='relu'),
             Dense(len(self.sign_labels), activation='softmax')
         ])
 
@@ -100,13 +94,12 @@ class ModelDynamic(Model):
         y_data = []
 
         self.get_data_set_dirs()
-        label_map = {label: i for i, label in enumerate(self.sign_labels)}
-
         for i, sign_dir in enumerate(self.data_set_signs_path):
             for file in os.listdir(sign_dir):
                 data = np.load(sign_dir + "/" + file)
                 x_data.append(data)
                 y_data.append(i)
 
-        return train_test_split(np.array(x_data), to_categorical(y_data).astype(int), test_size=0.2, random_state=55)
+        # return train_test_split(np.array(x_data), to_categorical(y_data).astype(int), test_size=0.2, random_state=55)
+        return train_test_split(np.array(x_data), to_categorical(y_data, len(self.sign_labels)), test_size=0.2, random_state=55)
         # return train_test_split(np.array(x_data), y_data, test_size=0.2, random_state=55)
