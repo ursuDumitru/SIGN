@@ -5,6 +5,7 @@ from keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 
 from SignLanguageModels import ModelDynamic
 
+print("DIMA")
 
 ATTEMPT = "_1"
 
@@ -18,7 +19,12 @@ model = ModelDynamic(sign_labels_file_path=sign_labels_file_path,
                      model_save_path=model_save_path,
                      random_state=55)
 
+# x_train, y_train = model.load_data_set()
 x_train, x_test, y_train, y_test = model.load_data_set()
+
+print(x_train.shape)
+# print(y_train)
+exit(1)
 
 model.model.summary()
 
@@ -27,13 +33,13 @@ early_stopping = EarlyStopping(patience=20, verbose=1)  # what is this ?
 tensor_board = TensorBoard(log_dir='./logs', histogram_freq=1)  # what is this ?
 
 model.model.compile(optimizer='adam',
-                    loss='sparse_categorical_crossentropy',
+                    loss='categorical_crossentropy',
                     metrics=['categorical_accuracy'])
 
 results = model.model.fit(x_train,
                           y_train,
                           epochs=1000,
-                          batch_size=16,
+                        #   batch_size=16,
                           validation_data=(x_test, y_test),
                           # callbacks=[tensor_board, checkpoint, early_stopping]
                           callbacks=[tensor_board, checkpoint])
