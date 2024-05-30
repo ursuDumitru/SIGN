@@ -66,10 +66,10 @@ class ApplicationMode:
         :return:
         """
         dm.get_sign_labels()
-        dm.get_sign_labels_counted()  # FIXME implement this for dynamic mode
+        dm.get_sign_labels_counted()
         dm.move_sign_labels_index(key_input)
 
-        if dm.sign_labels_index in range(0, len(dm.sign_labels)) and len(dm.sign_labels_counted) != []:
+        if dm.sign_labels_index in range(0, len(dm.sign_labels)) and len(dm.sign_labels_counted) != 0:
             text = f"Saving {data_type} landmark for: " \
                    f"{dm.sign_labels[dm.sign_labels_index]}" \
                    f"({dm.sign_labels_counted[dm.sign_labels_index]}), " \
@@ -77,8 +77,8 @@ class ApplicationMode:
 
             if self.MODE == 'd' and dm.SEQUENCE_ONGOING:
                 print(dm.current_sequence_frame)  # developer needs
-                text += f", frame: {dm.sign_labels_counted[dm.sign_labels_index] + 1}/" \
-                        f"{dm.number_of_frames_per_sequence}"
+                text = text + f", frame: {dm.sign_labels_counted[dm.sign_labels_index] + 1}/" \
+                              f"{dm.number_of_frames_per_sequence}"
 
         else:
             text = f"Save {data_type} Landmarks Mode(letter)"

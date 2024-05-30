@@ -3,7 +3,7 @@ import os
 
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential
-from keras.layers import GRU, Dense, Dropout, Input, Embedding
+from keras.layers import GRU, Dense, Dropout, Input, Embedding, SimpleRNN
 from keras.utils import to_categorical
 
 
@@ -49,7 +49,7 @@ class ModelStatic(Model):
             Dense(128, activation='relu'),
             Dropout(0.2),
             Dense(64, activation='relu'),
-            Dense(32, activation='relu'),
+            # Dense(32, activation='relu'),
             Dense(len(self.sign_labels), activation='softmax')  # TODO get act func from d.Holban research
         ])
 
@@ -64,20 +64,21 @@ class ModelDynamic(Model):
     def __init__(self, sign_labels_file_path, data_set_path, model_save_path, random_state) -> None:
         super().__init__(sign_labels_file_path, data_set_path, model_save_path, random_state)
         self.data_set_signs_path = []
+        self.get_sign_labels()
 
         self.model = Sequential([
             # Input((30, 21, 2)),
             # GRU(activation='relu', input_shape=(30, 42), units=256),
             # GRU(activation='relu', units=128),
             # GRU(activation='relu', units=64),
-            Embedding(input_dim=30*21*2, output_dim=64),
-            GRU(256, return_sequences=True),
+            # Embedding(input_dim=30*21*2, output_dim=64),
+            GRU(256, input_shape=(30, 21 * 2), return_sequences=True),
             GRU(128, return_sequences=True),
             GRU(64, return_sequences=True),
-            Dropout(0.2),
+            # SimpleRNN(32),
             Dense(128, activation='relu'),
+            Dropout(0.2),
             Dense(64, activation='relu'),
-            Dense(32, activation='relu'),
             Dense(len(self.sign_labels), activation='softmax')
         ])
 
@@ -85,7 +86,6 @@ class ModelDynamic(Model):
         """
         This method is used to create a directory for each sign label for data collecting.
         """
-        self.get_sign_labels()
         try:
             if not os.path.isdir(self.data_set_path):
                 raise FileNotFoundError
@@ -100,11 +100,13 @@ class ModelDynamic(Model):
         y_data = []
 
         self.get_data_set_dirs()
+        label_map = {label: i for i, label in enumerate(self.sign_labels)}
+
         for i, sign_dir in enumerate(self.data_set_signs_path):
             for file in os.listdir(sign_dir):
                 data = np.load(sign_dir + "/" + file)
                 x_data.append(data)
                 y_data.append(i)
-        
+
         return train_test_split(np.array(x_data), to_categorical(y_data).astype(int), test_size=0.2, random_state=55)
         # return train_test_split(np.array(x_data), y_data, test_size=0.2, random_state=55)

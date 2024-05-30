@@ -22,9 +22,17 @@ model = ModelDynamic(sign_labels_file_path=sign_labels_file_path,
 # x_train, y_train = model.load_data_set()
 x_train, x_test, y_train, y_test = model.load_data_set()
 
-print(x_train.shape)
-# print(y_train)
-exit(1)
+# print(x_train.shape)
+print(y_train.tolist())
+
+# test_list = []
+# test_list.append([1, 2, 3])
+# test_list.append([1, 2, 3])
+# test_list.append([1, 2, 3])
+# test_list.append([1, 2, 3])
+# print(test_list)
+
+# exit(1)
 
 model.model.summary()
 

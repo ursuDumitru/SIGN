@@ -175,14 +175,16 @@ class DataManipulatorDynamic(DataManipulator):
                 raise FileNotFoundError
             else:
                 for sign_label in self.sign_labels:
-                    if not os.path.isdir(self.data_set_file_path + "\\" + sign_label):
-                        os.makedirs(self.data_set_file_path + "\\" + sign_label)
-                    self.data_dirs_paths.append(self.data_set_file_path + "\\" + sign_label)
+                    path = self.data_set_file_path + "\\" + sign_label
+                    if not os.path.isdir(path):
+                        os.makedirs(path)
+                    self.data_dirs_paths.append(path)
         except FileNotFoundError:
             print(f"Directory '{self.data_set_file_path}' does not exist.")
 
     def get_sign_labels_counted(self):
         self.create_dir_for_each_sign()
+        self.sign_labels_counted = []
         for dir_path in self.data_dirs_paths:
             self.sign_labels_counted.append(len(os.listdir(dir_path)))
 
@@ -205,7 +207,7 @@ class DataManipulatorDynamic(DataManipulator):
                 if self.current_sequence_frame == self.number_of_frames_per_sequence:
                     np.save(self.data_dirs_paths[self.sign_labels_index] + "\\" +
                             str(len(os.listdir(self.data_dirs_paths[self.sign_labels_index]))) +
-                            ".npy", np.array(self.sequence).flatten())  # 21 * 2 * 30
+                            ".npy", np.array(self.sequence))  # 21 * 2 * 30 # 2 = 2D
                     self.sequence = []
                     self.SEQUENCE_ONGOING = False
                     self.current_sequence_frame = 0
