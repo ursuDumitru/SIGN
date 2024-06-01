@@ -1,4 +1,4 @@
 models/
-src/train_code/logs
-src_new/model_code/logs
+src/model_code/logs
 documentation/
+images/

@@ -24,13 +24,13 @@
 - [+] make it only one hand
 - [+] insert letters has a delay
 - [+] right hand for word/letters, left hands for picking actions # work fine without defining handedness
-- [] 500 images per sign ???
+- [+] 500 images per sign ???
 - [] translate the sentence in a language of choice
-- [] limit the word length
-- [] limit the sentence length
+- [+] limit the word length
+- [+] limit the sentence length
 - [] add a voice option to the translated text
-- [] write comments above each function
-- [] MAKE A MODEL FOR DYNAMIC SIGNS !!!!!!!!!!!!!!!!!
+- [+] write comments above each function
+- [+] MAKE A MODEL FOR DYNAMIC SIGNS !!!!!!!!!!!!!!!!!
 
 ## TODO Training
 
