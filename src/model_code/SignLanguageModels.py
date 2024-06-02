@@ -36,20 +36,18 @@ class Model:
     def save_model(self):
         self.model.save(self.model_save_path)
 
-    def load_data_set(self):
-        pass
-
 
 class ModelStatic(Model):
     def __init__(self, sign_labels_file_path, data_set_path, model_save_path, random_state) -> None:
         super().__init__(sign_labels_file_path, data_set_path, model_save_path, random_state)
-
+        self.get_sign_labels()
+        
         self.model = Sequential([
             Input((21 * 2,)),
-            Dense(128, activation='relu'),
+            Dense(256, activation='relu'),
             Dropout(0.2),
+            Dense(128, activation='relu'),
             Dense(64, activation='relu'),
-            # Dense(32, activation='relu'),
             Dense(len(self.sign_labels), activation='softmax')  # TODO get act func from d.Holban research
         ])
 
@@ -57,7 +55,7 @@ class ModelStatic(Model):
         x_data = np.loadtxt(self.data_set_path, delimiter=',', dtype='float32', usecols=list(range(1, (21 * 2) + 1)))
         y_data = np.loadtxt(self.data_set_path, delimiter=',', dtype='int32', usecols=0)
 
-        return train_test_split(x_data, y_data, test_size=0.2, random_state=55)  # TODO: try different number
+        return train_test_split(x_data, to_categorical(y_data, len(self.sign_labels)), test_size=0.2, random_state=55)  # TODO: try different number
 
 
 class ModelDynamic(Model):
@@ -100,6 +98,4 @@ class ModelDynamic(Model):
                 x_data.append(data)
                 y_data.append(i)
 
-        # return train_test_split(np.array(x_data), to_categorical(y_data).astype(int), test_size=0.2, random_state=55)
         return train_test_split(np.array(x_data), to_categorical(y_data, len(self.sign_labels)), test_size=0.2, random_state=55)
-        # return train_test_split(np.array(x_data), y_data, test_size=0.2, random_state=55)

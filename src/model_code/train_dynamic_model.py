@@ -7,11 +7,11 @@ from SignLanguageModels import ModelDynamic
 
 print("DIMA")
 
-ATTEMPT = "_1"
+ATTEMPT = "_2"
 
 base_dir = os.path.dirname(os.path.realpath(__file__)) + '/../../'
-sign_labels_file_path = base_dir + r"data/dynamic/sign_labels/sign_labels_1.csv"
-data_set_path = base_dir + r"data/dynamic/data_set/data_set_1"
+sign_labels_file_path = base_dir + f"data/dynamic/sign_labels/sign_labels{ATTEMPT}.csv"
+data_set_path = base_dir + f"data/dynamic/data_set/data_set{ATTEMPT}"
 model_save_path = base_dir + f"models/dynamic/model_dynamic{ATTEMPT}.h5"
 
 model = ModelDynamic(sign_labels_file_path=sign_labels_file_path,
@@ -19,20 +19,7 @@ model = ModelDynamic(sign_labels_file_path=sign_labels_file_path,
                      model_save_path=model_save_path,
                      random_state=55)
 
-# x_train, y_train = model.load_data_set()
 x_train, x_test, y_train, y_test = model.load_data_set()
-
-# print(x_train.shape)
-print(y_train.tolist())
-
-# test_list = []
-# test_list.append([1, 2, 3])
-# test_list.append([1, 2, 3])
-# test_list.append([1, 2, 3])
-# test_list.append([1, 2, 3])
-# print(test_list)
-
-# exit(1)
 
 model.model.summary()
 
