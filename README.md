@@ -31,10 +31,11 @@
 - [] add a voice option to the translated text
 - [+] write comments above each function
 - [+] MAKE A MODEL FOR DYNAMIC SIGNS !!!!!!!!!!!!!!!!!
+- [] find a way to print warnings and errors ?
 
 ## TODO Training
 
-- [] new accurate data-set
+- [+] new accurate data-set
 - [] create tests for the model
 - [] test every code branch so that it works as expected
 

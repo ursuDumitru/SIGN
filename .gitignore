@@ -2,3 +2,5 @@ models/
 src/model_code/logs
 documentation/
 images/
+.ipynb_checkpoints
+.idea/

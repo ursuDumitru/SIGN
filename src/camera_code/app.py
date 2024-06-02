@@ -14,12 +14,12 @@ if __name__ == "__main__":
     # get the paths for the static mode
     static_sign_labels_file_path = base_dir + r"data\static\sign_labels\sign_labels_5.csv"
     static_data_set_file_path = base_dir + r"data\static\data_set\data_set_5.csv"
-    static_model_weights_file_path = base_dir + r"models\static\model_abc_3.h5"
+    static_model_weights_file_path = base_dir + r"models\static\model_static_5_1.h5"
 
     # get the paths for the dynamic mode
     dynamic_sign_labels_file_path = base_dir + r"data\dynamic\sign_labels\sign_labels_2.csv"
     dynamic_data_set_dir_path = base_dir + r"data\dynamic\data_set\data_set_2"
-    dynamic_model_weights_file_path = base_dir + r"models\dynamic\model_dynamic_1.h5"
+    dynamic_model_weights_file_path = base_dir + r"models\dynamic\model_dynamic_2.h5"
 
     # create the important objects
     app_mode = ApplicationMode()
@@ -57,7 +57,10 @@ if __name__ == "__main__":
             # get the landmarks from the hand detector model
             landmarks_dictionary = data_manipulator_static.convert_detected_landmarks_to_dict(mediapipe_results)
             normalized_landmarks = data_manipulator_static.normalize_landmarks(landmarks_dictionary)
+
+            # set up the variables used by the prediction
             label = confidence = None
+            accepted_word_labels = data_manipulator_static.sign_labels[:26] + data_manipulator_dynamic.sign_labels
 
             # control the data flow based on the application mode
             # save the landmarks of the detected static sign
@@ -73,7 +76,8 @@ if __name__ == "__main__":
                                                                    landmarks_dictionary)
                 # sentence mode
                 if app_mode.SENTENCE_MODE:
-                    app_mode.create_word(label)
+                    app_mode.create_word(label, accepted_word_labels)
+                    app_mode.create_sentence(label)
 
             # save the landmarks as a sequence of the detected dynamic sign
             if app_mode.MODE == '3':
@@ -88,7 +92,8 @@ if __name__ == "__main__":
                                                                    landmarks_dictionary)
                 # sentence mode
                 if app_mode.SENTENCE_MODE:
-                    app_mode.create_word(label)
+                    app_mode.create_word(label, accepted_word_labels)
+                    app_mode.create_sentence(label)
 
             # draw the landmarks of the hands on the frame
             if app_mode.MODE != '1' and app_mode.SHOW_LANDMARKS:

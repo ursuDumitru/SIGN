@@ -33,6 +33,7 @@ class ApplicationMode:
         self.INSERT_DELAY = 30  # 30 frames delay
         self.WORD = ""
         self.SENTENCE = ""
+        self.SENTENCE_MOVE_INDEX = -1  # FIXME, has to be reset somewhere
         self.MAX_WORD_LENGTH = 30
         self.MAX_SENTENCE_LENGTH = 60
 
@@ -164,29 +165,148 @@ class ApplicationMode:
 
         return frame
 
-    def create_word(self, label):
+    def add_to_word(self, label):
+        """
+        This method is used to add a letter/entire word to the active word attribute.
+        :param label: str, the detected sign label.
+        :return:
+        """
+        if len(self.WORD) < self.MAX_WORD_LENGTH:
+            self.WORD += label
+            if self.MODE == '5':
+                self.WORD += " "
+            self.INSERT_DELAY = 30
+
+    def delete_letter_from_word(self):
+        """
+        This method is used to delete the last letter from the active word.
+        :return:
+        """
+        if len(self.WORD) > 0:
+            self.WORD = self.WORD[:-1]
+            self.INSERT_DELAY = 30
+
+    def delete_word(self):
+        """
+        This method is used to delete the entire active word.
+        :return:
+        """
+        self.WORD = ""
+        self.INSERT_DELAY = 30
+
+    def create_word(self, label, accepted_word_labels):
         """
         This method is used to create a word from the detected signs.
+        :param accepted_word_labels: list, accepted sign labels for the word.
         :param label: str, the detected sign label.
         :return: None
         """
-        # FIXME needs implementation for word actions
         if self.INSERT_DELAY == 0:
-            if len(self.WORD) < self.MAX_WORD_LENGTH:
-                self.WORD += label
-                if self.MODE == '5':
-                    self.WORD += " "
-                self.INSERT_DELAY = 30
+            if label in accepted_word_labels:
+                self.add_to_word(label)
+            elif label == "delete_letter_from_word":
+                self.delete_letter_from_word()
+            elif label == "delete_word":
+                self.delete_word()
+            # if the detected sign is not in the accepted_word_labels do nothing
+            else:
+                return
         else:
             self.INSERT_DELAY -= 1
 
-    def create_sentence(self, label, dm):  # TODO this is implemented using the custom signs
+    def add_word_to_sentence(self):
+        """
+        This method is used to add the active word to the sentence.
+        :return:
+        """
+        if len(self.WORD) > 0 and len(self.SENTENCE) + len(self.WORD) < self.MAX_SENTENCE_LENGTH:
+            if " " not in self.WORD:
+                self.WORD += " "
+            self.SENTENCE += self.WORD
+            self.WORD = ""
+            self.INSERT_DELAY = 30
+            self.SENTENCE_MOVE_INDEX = -1
+
+    def move_to_left_word(self):
+        """
+        This method is used to move to the next left word in the sentence.
+        :return:
+        """
+        buff_split_sentence = self.SENTENCE.lower().split(" ")
+        if len(buff_split_sentence) >= 1 and self.SENTENCE_MOVE_INDEX >= 0:
+            self.INSERT_DELAY = 30
+            self.SENTENCE_MOVE_INDEX -= 1
+            if self.SENTENCE_MOVE_INDEX > -1:
+                buff_split_sentence[self.SENTENCE_MOVE_INDEX] = buff_split_sentence[self.SENTENCE_MOVE_INDEX].upper()
+            self.SENTENCE = " ".join(buff_split_sentence)
+
+    def move_to_right_word(self):
+        """
+        This method is used to move to the next right word in the sentence.
+        :return:
+        """
+        buff_split_sentence = self.SENTENCE.lower().split(" ")
+        if len(buff_split_sentence) >= 1 and self.SENTENCE_MOVE_INDEX < len(buff_split_sentence) - 1:
+            self.INSERT_DELAY = 30
+            self.SENTENCE_MOVE_INDEX += 1
+            if self.SENTENCE_MOVE_INDEX < len(buff_split_sentence):
+                buff_split_sentence[self.SENTENCE_MOVE_INDEX] = buff_split_sentence[self.SENTENCE_MOVE_INDEX].upper()
+            self.SENTENCE = " ".join(buff_split_sentence)
+
+    def select_word_from_sentence(self):
+        """
+        This method is used to select the highlighted word from the sentence.
+        :return:
+        """
+        buff_split_sentence = self.SENTENCE.lower().split(" ")
+        if len(buff_split_sentence) > 0 and self.SENTENCE_MOVE_INDEX in range(0, len(buff_split_sentence) - 1):
+            self.WORD = buff_split_sentence[self.SENTENCE_MOVE_INDEX]
+            buff_split_sentence.pop(self.SENTENCE_MOVE_INDEX)
+            self.SENTENCE = " ".join(buff_split_sentence)
+            self.INSERT_DELAY = 30
+            self.SENTENCE_MOVE_INDEX = -1
+
+    def delete_word_from_sentence(self):
+        """
+        This method is used to delete the highlighted word from the sentence.
+        :return:
+        """
+        buff_split_sentence = self.SENTENCE.lower().split(" ")
+        if len(buff_split_sentence) > 0 and self.SENTENCE_MOVE_INDEX in range(0, len(buff_split_sentence) - 1):
+            buff_split_sentence.pop(self.SENTENCE_MOVE_INDEX)
+            self.SENTENCE = " ".join(buff_split_sentence)
+            self.INSERT_DELAY = 30
+            self.SENTENCE_MOVE_INDEX = -1
+
+    def delete_sentence(self):
+        """
+        This method is used to delete the entire sentence.
+        :return:
+        """
+        self.SENTENCE = ""
+        self.INSERT_DELAY = 30
+        self.SENTENCE_MOVE_INDEX = -1
+
+    def create_sentence(self, label):
         """
         This method is used to create a sentence from the detected words.
-        :param label:
-        :param dm: DataManipulator, Static or Dynamic.
+        :param label: str, the detected word label.
         :return: None
         """
-        if dm.WORD != "":
-            dm.SENTENCE += dm.WORD + " "
-            dm.WORD = ""
+        if self.INSERT_DELAY == 0:
+            if label == "add_word_to_sentence":
+                self.add_word_to_sentence()
+            if label == "move_to_left_word" and self.WORD == "":  # only if active word is empty
+                self.move_to_left_word()
+            if label == "move_to_right_word" and self.WORD == "":  # only if active word is empty
+                self.move_to_right_word()
+            if label == "select_word_from_sentence" and self.WORD == "":
+                self.select_word_from_sentence()
+            if label == "delete_word_from_sentence" and self.WORD == "":
+                self.delete_word_from_sentence()
+            elif label == "delete_sentence":
+                self.delete_sentence()
+            else:
+                return
+        else:
+            self.INSERT_DELAY -= 1
