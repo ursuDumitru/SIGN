@@ -6,7 +6,7 @@ from keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 from SignLanguageModels import ModelStatic
 
 TRY = "_5"
-ATTEMPT = "_5_1"
+ATTEMPT = "_5_2"
 
 base_dir = os.path.dirname(os.path.realpath(__file__)) + '/../../'
 sign_labels_file_path = base_dir + f"data/static/sign_labels/sign_labels{TRY}.csv"

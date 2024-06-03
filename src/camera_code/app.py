@@ -19,7 +19,7 @@ if __name__ == "__main__":
     # get the paths for the dynamic mode
     dynamic_sign_labels_file_path = base_dir + r"data\dynamic\sign_labels\sign_labels_2.csv"
     dynamic_data_set_dir_path = base_dir + r"data\dynamic\data_set\data_set_2"
-    dynamic_model_weights_file_path = base_dir + r"models\dynamic\model_dynamic_2.h5"
+    dynamic_model_weights_file_path = base_dir + r"models\dynamic\model_dynamic_2_2.h5"
 
     # create the important objects
     app_mode = ApplicationMode()
