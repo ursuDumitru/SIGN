@@ -8,7 +8,7 @@ from SignLanguageModels import ModelDynamic
 print("DIMA")
 
 TRY = "_2"
-ATTEMPT = "_2_1"
+ATTEMPT = "_2_2"
 
 base_dir = os.path.dirname(os.path.realpath(__file__)) + '/../../'
 sign_labels_file_path = base_dir + f"data/dynamic/sign_labels/sign_labels{TRY}.csv"

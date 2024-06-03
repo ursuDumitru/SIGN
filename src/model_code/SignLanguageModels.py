@@ -48,7 +48,7 @@ class ModelStatic(Model):
             Dropout(0.2),
             Dense(128, activation='relu'),
             Dense(64, activation='relu'),
-            Dense(len(self.sign_labels), activation='softmax')  # TODO get act func from d.Holban research
+            Dense(len(self.sign_labels), activation='sigmoid')  # TODO get act func from d.Holban research
         ])
 
     def load_data_set(self):
@@ -65,13 +65,13 @@ class ModelDynamic(Model):
         self.get_sign_labels()
 
         self.model = Sequential([
-            GRU(256, return_sequences=True, input_shape=(30, 21 * 2)),
-            GRU(128, return_sequences=True),
-            GRU(64, return_sequences=False),
+            GRU(256, return_sequences=True, activation='relu', input_shape=(30, 21 * 2)),
+            GRU(128, return_sequences=True, activation='relu'),
+            GRU(64, return_sequences=False, activation='relu'),
             Dense(64, activation='relu'),
             Dropout(0.2),
             Dense(32, activation='relu'),
-            Dense(len(self.sign_labels), activation='softmax')
+            Dense(len(self.sign_labels), activation='sigmoid')
         ])
 
     def get_data_set_dirs(self):
