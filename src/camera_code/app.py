@@ -46,7 +46,7 @@ if __name__ == "__main__":
         # get the key input from the user and set the app mode
         key_input = cv.waitKey(10)
         app_mode.get_app_mode(key_input)
-        frame = app_mode.set_app_mode(frame, key_input, data_manipulator_static, data_manipulator_dynamic)
+        frame = app_mode.set_app_mode(frame.copy(), key_input, data_manipulator_static, data_manipulator_dynamic)
         if app_mode.MODE == 'q':
             break
 
@@ -72,7 +72,7 @@ if __name__ == "__main__":
                 label, confidence = sign_detector_static.get_label_and_prediction(normalized_landmarks,
                                                                                   data_manipulator_static)
                 # display the prediction above the detected hand
-                frame = hands_detector.display_prediction_on_frame(frame, label, confidence,
+                frame = hands_detector.display_prediction_on_frame(frame.copy(), label, confidence,
                                                                    landmarks_dictionary)
                 # sentence mode
                 if app_mode.SENTENCE_MODE:
@@ -88,7 +88,7 @@ if __name__ == "__main__":
                 label, confidence = sign_detector_dynamic.get_label_and_prediction(normalized_landmarks,
                                                                                    data_manipulator_dynamic)
                 # display the prediction above the detected hand
-                frame = hands_detector.display_prediction_on_frame(frame, label, confidence,
+                frame = hands_detector.display_prediction_on_frame(frame.copy(), label, confidence,
                                                                    landmarks_dictionary)
                 # sentence mode
                 if app_mode.SENTENCE_MODE:
@@ -97,9 +97,9 @@ if __name__ == "__main__":
 
             # draw the landmarks of the hands on the frame
             if app_mode.MODE != '1' and app_mode.SHOW_LANDMARKS:
-                frame = hands_detector.draw_hands_landmarks(frame, mediapipe_results)
+                frame = hands_detector.draw_hands_landmarks(frame.copy(), mediapipe_results)
                 if app_mode.MODE in {'4', '5'}:
-                    frame = hands_detector.draw_rectangle_around_hand(frame, landmarks_dictionary)
+                    frame = hands_detector.draw_rectangle_around_hand(frame.copy(), landmarks_dictionary)
 
         cv.imshow('SIGN', frame)
 

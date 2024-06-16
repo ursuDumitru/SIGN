@@ -1,10 +1,12 @@
 import numpy as np
 import os
 
+# import tensorflow as tf
 from sklearn.model_selection import train_test_split
-from keras.models import Sequential
-from keras.layers import GRU, Dense, Dropout, Input, Embedding, SimpleRNN
-from keras.utils import to_categorical
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import GRU, Dense, Dropout, Input
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.layers import PReLU
 
 
 class Model:
@@ -42,14 +44,22 @@ class ModelStatic(Model):
         super().__init__(sign_labels_file_path, data_set_path, model_save_path, random_state)
         self.get_sign_labels()
         
+        # self.model = Sequential([
+        #     Input((21 * 2,)),
+        #     Dense(256, activation=PReLU()),
+        #     Dropout(0.2),
+        #     Dense(128, activation=PReLU()),
+        #     Dense(64, activation=PReLU()),
+        #     Dense(len(self.sign_labels), activation='sigmoid')
+        # ])
+
         self.model = Sequential([
             Input((21 * 2,)),
-            Dense(256, activation='relu'),
-            Dropout(0.2),
-            Dense(128, activation='relu'),
-            Dense(64, activation='relu'),
-            Dense(len(self.sign_labels), activation='sigmoid')  # TODO get act func from d.Holban research
+            Dense(32, activation=PReLU()),
+            Dense(16, activation=PReLU()),
+            Dense(len(self.sign_labels), activation='sigmoid')
         ])
+
 
     def load_data_set(self):
         x_data = np.loadtxt(self.data_set_path, delimiter=',', dtype='float32', usecols=list(range(1, (21 * 2) + 1)))
@@ -65,12 +75,12 @@ class ModelDynamic(Model):
         self.get_sign_labels()
 
         self.model = Sequential([
-            GRU(256, return_sequences=True, activation='relu', input_shape=(30, 21 * 2)),
-            GRU(128, return_sequences=True, activation='relu'),
-            GRU(64, return_sequences=False, activation='relu'),
-            Dense(64, activation='relu'),
+            GRU(256, return_sequences=True, activation=PReLU(), input_shape=(30, 21 * 2)),
+            GRU(128, return_sequences=True, activation=PReLU()),
+            GRU(64, return_sequences=False, activation=PReLU()),
+            Dense(64, activation=PReLU()),
             Dropout(0.2),
-            Dense(32, activation='relu'),
+            Dense(32, activation=PReLU()),
             Dense(len(self.sign_labels), activation='sigmoid')
         ])
 

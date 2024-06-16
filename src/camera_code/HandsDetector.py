@@ -29,6 +29,7 @@ class HandsDetector:
         # colors
         self.purple = (128, 0, 128)
         self.white = (255, 255, 255)
+        self.green = (0, 255, 0)
 
     def mediapipe_hands_detect(self, frame):
         """
@@ -102,5 +103,41 @@ class HandsDetector:
             cv.putText(frame, f"{label} ({confidence:.2f})",
                        (int(min_x * frame.shape[1]), int(min_y * frame.shape[0]) - 15),
                        cv.FONT_HERSHEY_SIMPLEX, 0.8, self.purple, 2, cv.LINE_AA)
+
+        return frame
+
+    def draw_original_coord(self, frame, landmarks):
+        for pair in landmarks:
+            cv.circle(frame, (int(pair['x'] * frame.shape[1]), int(pair['y'] * frame.shape[0])),
+                      5, self.green, -1)
+            cv.putText(frame, f"{int(pair['x'] * frame.shape[1])}, {int(pair['y'] * frame.shape[0])}",
+                       (int(pair['x'] * frame.shape[1]), int(pair['y'] * frame.shape[0])),
+                       cv.FONT_HERSHEY_SIMPLEX, 0.5, self.white, 2, cv.LINE_AA)
+
+        return frame
+
+    def draw_normalized_coord(self, frame, landmarks):
+        for pair in landmarks:
+            cv.circle(frame, (int(pair['x'] * frame.shape[1]), int(pair['y'] * frame.shape[0])),
+                      5, self.green, -1)
+            cv.putText(frame, f"{pair['x']:.2f}, {pair['y']:.2f}",
+                       (int(pair['x'] * frame.shape[1]), int(pair['y'] * frame.shape[0])),
+                       cv.FONT_HERSHEY_SIMPLEX, 0.5, self.white, 2, cv.LINE_AA)
+
+        return frame
+
+    def draw_normalized_to_wrist_coord(self, frame, landmarks):
+        x_0 = landmarks[0]['x']
+        y_0 = landmarks[0]['y']
+
+        for pair in landmarks:
+            color = (0, 0, 255) if pair['x'] == x_0 and pair['y'] == y_0 else self.green
+
+            cv.circle(frame, (int(pair['x'] * frame.shape[1]), int(pair['y'] * frame.shape[0])),
+                      5, color, -1)
+
+            cv.putText(frame, f"{(pair['x'] - x_0):.2f}, {(pair['y'] - y_0):.2f}",
+                       (int(pair['x'] * frame.shape[1]), int(pair['y'] * frame.shape[0])),
+                       cv.FONT_HERSHEY_SIMPLEX, 0.5, self.white, 2, cv.LINE_AA)
 
         return frame
