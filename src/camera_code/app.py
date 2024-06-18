@@ -40,7 +40,6 @@ if __name__ == "__main__":
 
     # start the camera
     cap = cv.VideoCapture(0)
-    cap.set(cv.CAP_PROP_BUFFERSIZE, 2)
 
     # set up a while loop to process the frames
     while True:
