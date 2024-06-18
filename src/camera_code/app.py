@@ -12,14 +12,16 @@ if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.realpath(__file__)) + '\\..\\..\\'
 
     # get the paths for the static mode
-    static_sign_labels_file_path = base_dir + r"data\static\sign_labels\sign_labels_5.csv"
-    static_data_set_file_path = base_dir + r"data\static\data_set\data_set_5.csv"
-    static_model_weights_file_path = base_dir + r"models\static\model_static_5_1.h5"
+    TRY = 5
+    static_sign_labels_file_path = base_dir + f"data\\static\\sign_labels\\sign_labels_{TRY}.csv"
+    static_data_set_file_path = base_dir + f"data\\static\\data_set\\data_set_{TRY}.csv"
+    static_model_weights_file_path = base_dir + f"models\\static\\model_static_{TRY}_1.h5"
 
     # get the paths for the dynamic mode
-    dynamic_sign_labels_file_path = base_dir + r"data\dynamic\sign_labels\sign_labels_2.csv"
-    dynamic_data_set_dir_path = base_dir + r"data\dynamic\data_set\data_set_2"
-    dynamic_model_weights_file_path = base_dir + r"models\dynamic\model_dynamic_2_2.h5"
+    TRY = 3
+    dynamic_sign_labels_file_path = base_dir + f"data\\dynamic\\sign_labels\\sign_labels_{TRY}.csv"
+    dynamic_data_set_dir_path = base_dir + f"data\\dynamic\\data_set\\data_set_{TRY}"
+    dynamic_model_weights_file_path = base_dir + f"models\\dynamic\\model_dynamic_2_2.h5"
 
     # create the important objects
     app_mode = ApplicationMode()
@@ -38,6 +40,7 @@ if __name__ == "__main__":
 
     # start the camera
     cap = cv.VideoCapture(0)
+    cap.set(cv.CAP_PROP_BUFFERSIZE, 2)
 
     # set up a while loop to process the frames
     while True:
