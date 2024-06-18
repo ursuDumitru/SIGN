@@ -4,3 +4,6 @@ documentation/
 images/
 .ipynb_checkpoints
 .idea/
+logs/
+src/camera_code/__pycache__/*.pyc
+src/train_code/__pycache__/*.pyc
