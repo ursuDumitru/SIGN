@@ -107,7 +107,7 @@ class ModelDynamic(Model):
             GRU(128, return_sequences=True, activation=PReLU()),
             GRU(64, return_sequences=False, activation=PReLU()),
             Dense(64, activation=PReLU()),
-            # Dropout(0.2),
+            Dropout(0.2),
             Dense(32, activation=PReLU()),
             Dense(len(self.sign_labels), activation='sigmoid')
         ])
@@ -125,16 +125,20 @@ class ModelDynamic(Model):
         except FileNotFoundError:
             print(f"Directory '{self.data_set_path}' does not exist.")
 
-    def load_data_set(self):
+    def load_data_set(self, x=-1):
         x_data = []
         y_data = []
 
         self.get_data_set_dirs()
         for i, sign_dir in enumerate(self.data_set_signs_path):
+            file_count = 0
             for file in os.listdir(sign_dir):
+                if file_count == x:
+                    break
                 data = np.load(sign_dir + "/" + file)
                 x_data.append(data)
                 y_data.append(i)
+                file_count += 1
 
         return train_test_split(np.array(x_data), to_categorical(y_data, len(self.sign_labels)),
                                 test_size=0.2, random_state=self.random_state)

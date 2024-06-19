@@ -6,14 +6,14 @@ from keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 
 from BuildLanguageModels import ModelDynamic
 
-TRY = "_2"
-ATTEMPT = f"{TRY}_test"
+TRY = "_3"
+ATTEMPT = f"{TRY}_dropout_allData_earlyStopping_50Patience"
 
 base_dir = os.path.dirname(os.path.realpath(__file__)) + '/../../'
 sign_labels_file_path = base_dir + f"data/dynamic/sign_labels/sign_labels{TRY}.csv"
 data_set_path = base_dir + f"data/dynamic/data_set/data_set{TRY}"
 model_save_path = base_dir + f"models/dynamic/model_dynamic{ATTEMPT}.h5"
-model_summary_save_path = base_dir + f"images/dynamic/model_summary/model_static{ATTEMPT}.txt"
+model_summary_save_path = base_dir + f"images/models/dynamic/summary/model_static{ATTEMPT}.txt"
 
 model = ModelDynamic(sign_labels_file_path=sign_labels_file_path,
                      data_set_path=data_set_path,
@@ -22,10 +22,8 @@ model = ModelDynamic(sign_labels_file_path=sign_labels_file_path,
 
 x_train, x_test, y_train, y_test = model.load_data_set()
 
-model.model.summary()
-
 checkpoint = ModelCheckpoint(model.model_save_path, verbose=1, save_weights_only=False)
-early_stopping = EarlyStopping(patience=20, verbose=1)
+early_stopping = EarlyStopping(patience=50, verbose=1)
 tensor_board = TensorBoard(log_dir='./logs', histogram_freq=1)
 
 model.model.compile(optimizer='adam',
@@ -34,10 +32,11 @@ model.model.compile(optimizer='adam',
 
 results = model.model.fit(x_train,
                           y_train,
-                          epochs=1000,
+                          epochs=1500,
                         #   batch_size=16,
                           validation_data=(x_test, y_test),
                           callbacks=[tensor_board, checkpoint, early_stopping])
+                        #   callbacks=[tensor_board, checkpoint])
 
 val_loss, val_acc = model.model.evaluate(x_test, y_test, batch_size=16)
 

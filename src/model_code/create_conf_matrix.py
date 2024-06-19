@@ -7,8 +7,9 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classifica
 from UseLanguageModels import ModelStatic, ModelDynamic
 
 MODE = "dynamic" # dynamic | static
-TRY = "_5" if MODE == "static" else "_2"
-ATTEMPT = f"{TRY}_test"
+TRY = "_5" if MODE == "static" else "_3"
+ATTEMPT = f"{TRY}_dropout_allData_earlyStopping_50Patience"
+# noDropout_30Data + 150 epoch = best
 
 base_dir = os.path.dirname(os.path.realpath(__file__)) + '/../../'
 sign_labels_file_path = base_dir + f"data/{MODE}/sign_labels/sign_labels{TRY}.csv"
@@ -35,7 +36,7 @@ y_true_classes = np.argmax(y_test, axis=1)
 cm = confusion_matrix(y_true_classes, y_pred_classes)
 cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
-fig, ax = plt.subplots(figsize=(20, 20))  # Adjust the figure size as needed
+fig, ax = plt.subplots(figsize=(15, 15))
 
 disp = ConfusionMatrixDisplay(confusion_matrix=cm_normalized, display_labels=model.sign_labels)
 disp.plot(cmap=plt.cm.Blues, ax=ax, xticks_rotation='vertical')  # Rotate labels to vertical
