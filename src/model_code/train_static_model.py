@@ -21,9 +21,9 @@ model = ModelStatic(sign_labels_file_path=sign_labels_file_path,
                     random_state=55)
 
 x_train, x_test, y_train, y_test = model.load_data_set()
-# x_train, x_test, y_train, y_test = model.load_data_set_first_x(500)
 
-checkpoint = ModelCheckpoint(model.model_save_path, verbose=1, save_weights_only=False)
+checkpoint = ModelCheckpoint(model.model_save_path, verbose=1,
+                             save_weights_only=False)
 early_stopping = EarlyStopping(patience=20, verbose=1)
 tensor_board = TensorBoard(log_dir='./logs', histogram_freq=1)
 
@@ -34,11 +34,12 @@ model.model.compile(optimizer='adam',
 results = model.model.fit(x_train,
                           y_train,
                           epochs=1000,
-                        #   batch_size=32,
                           validation_data=(x_test, y_test),
-                          callbacks=[tensor_board, checkpoint, early_stopping])
+                          callbacks=[tensor_board, checkpoint,
+                                     early_stopping])
 
-val_loss, val_acc = model.model.evaluate(x_test, y_test, batch_size=16)
+val_loss, val_acc = model.model.evaluate(x_test, y_test,
+                                         batch_size=16)
 
 model.save_model()
 

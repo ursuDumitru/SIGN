@@ -153,7 +153,7 @@ class DataManipulatorStatic(DataManipulator):
         :param key_input: int, the key input from the user.
         """
         if self.sign_labels_index in range(0, len(self.sign_labels)):
-            if key_input == ord('c'):  # TODO make a toggle so that I can store images too
+            if key_input == ord('c'):
                 # check if file exists
                 try:
                     with open(self.data_set_file_path, 'a') as file:
@@ -290,7 +290,7 @@ class DataManipulatorDynamic(DataManipulator):
                 if self.current_sequence_frame == self.number_of_frames_per_sequence:
                     np.save(self.data_dirs_paths[self.sign_labels_index] + "\\" +
                             str(len(os.listdir(self.data_dirs_paths[self.sign_labels_index]))) +
-                            ".npy", np.array(self.sequence))  # 21 * 2 * 30 # 2 = 2D
+                            ".npy", np.array(self.sequence))
                     self.sequence = []
                     self.SEQUENCE_ONGOING = False
                     self.current_sequence_frame = 0

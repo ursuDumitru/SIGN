@@ -48,12 +48,15 @@ if __name__ == "__main__":
         # get the key input from the user and set the app mode
         key_input = cv.waitKey(10)
         app_mode.get_app_mode(key_input)
-        frame = app_mode.set_app_mode(frame.copy(), key_input, data_manipulator_static, data_manipulator_dynamic)
+        frame = app_mode.set_app_mode(frame.copy(),
+                                      key_input,
+                                      data_manipulator_static,
+                                      data_manipulator_dynamic)
         if app_mode.MODE == 'q':
             break
 
         # detect hands in the frame
-        mediapipe_results = hands_detector.mediapipe_hands_detect(frame)
+        mediapipe_results = hands_detector.mediapipe_hands_detect(frame.copy())
 
         if mediapipe_results.multi_hand_landmarks is not None:
             # get the landmarks from the hand detector model
@@ -77,7 +80,7 @@ if __name__ == "__main__":
                 frame = hands_detector.display_prediction_on_frame(frame.copy(), label, confidence,
                                                                    landmarks_dictionary)
                 # sentence mode
-                if app_mode.SENTENCE_MODE:
+                if app_mode.SENTENCE_MODE: # fa o figura în care sunt semnele utilizate in construirea propozitiei
                     app_mode.create_word(label, accepted_word_labels)
                     app_mode.create_sentence(label)
 
@@ -102,6 +105,10 @@ if __name__ == "__main__":
                 frame = hands_detector.draw_hands_landmarks(frame.copy(), mediapipe_results)
                 if app_mode.MODE in {'4', '5'}:
                     frame = hands_detector.draw_rectangle_around_hand(frame.copy(), landmarks_dictionary)
+
+        if key_input == ord('k'):
+            cv.imwrite(base_dir + f"images\\frames\\length1_dynamic{app_mode.TAKE}.jpg", frame)
+            app_mode.TAKE += 1
 
         cv.imshow('SIGN', frame)
 

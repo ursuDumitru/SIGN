@@ -41,6 +41,8 @@ class ApplicationMode:
         self.purple = (128, 0, 128)
         self.white = (255, 255, 255)
 
+        self.TAKE = 0
+
     def get_app_mode(self, key_input):
         """
         This method is used to change the application mode
@@ -129,33 +131,28 @@ class ApplicationMode:
         mode on the GUI of the frame.
         :param frame: np.array, the frame to be displayed.
         :param key_input: int, unicode value of user input.
-        :param data_manipulator_static: DataManipulatorStatic, blabla.
-        :param data_manipulator_dynamic: DataManipulatorStatic, blabla
+        :param data_manipulator_static: DataManipulatorStatic, object that stores static data.
+        :param data_manipulator_dynamic: DataManipulatorStatic, object that stores dynamic data.
         """
         cv.rectangle(frame, (0, 0), (frame.shape[1], 20), (255, 255, 255), -1)
         text = ""
 
         if self.MODE == '1':
             text = "Free Camera Mode"
-
         elif self.MODE == '2':
             text = self.set_text_for_save_mode(key_input, data_manipulator_static,
                                                'static')
-
         elif self.MODE == '3':
             text = self.set_text_for_save_mode(key_input, data_manipulator_dynamic,
                                                'dynamic')
-
         elif self.MODE == '4':
             text = "Detect Static Signs Mode(letter)"
             if self.SENTENCE_MODE:
                 frame = self.set_sentence_mode(frame)
-
         elif self.MODE == '5':
             text = "Detect Dynamic Signs Mode(word)"
             if self.SENTENCE_MODE:
                 frame = self.set_sentence_mode(frame)
-
         elif self.MODE == 'q':
             text = "Quit Application"
 

@@ -13,7 +13,6 @@ class SignDetector(ABC):
         """
         Initialize the SignDetector object.
             - model: keras.engine.functional.Functional, the model used for sign detection.
-            - INSERT_DELAY: int, the delay between inserting signs in real time detection.
         :param model_weights_path: str, the path to the model weights file.
         """
         self.model = load_model(model_weights_path)

@@ -35,7 +35,7 @@ class HandsDetector:
         """
         This method is used to detect hands in a frame using the mediapipe hands model.
         :param frame: np.array, one frame from the video feed used to detect the hands.
-        :return mediapipe_results: mediapipe.framework.formats.landmark_pb2.NormalizedLandmarkList,
+        :return mediapipe_results: ..NormalizedLandmarkList,
         the landmarks of the hands.
         """
         frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
